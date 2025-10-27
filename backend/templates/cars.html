@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Piston Archive - Vintage Cars Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #ffffff;
+            color: #2c3e50;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1.5rem 0;
+            border-bottom: 3px solid #e94560;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.8s ease-out;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e94560;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #e94560;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #e94560;
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(233,69,96,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: #e94560;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 3px 3px 6px rgba(0,0,0,0.2), 0 0 20px rgba(233,69,96,0.3);
+            }
+            to {
+                text-shadow: 3px 3px 6px rgba(0,0,0,0.2), 0 0 40px rgba(233,69,96,0.5);
+            }
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            color: #f1f1f1;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #e94560, transparent);
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: #ffffff;
+            color: #1a1a2e;
+            border: 2px solid #e94560;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #e94560;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .car-card {
+            background: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid #f0f0f0;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .car-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(233,69,96,0.2);
+            border-color: #e94560;
+        }
+
+        .car-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border-bottom: 2px solid #e94560;
+            position: relative;
+            overflow: hidden;
+            color: #e94560;
+        }
+
+        .car-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(233,69,96,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .car-info {
+            padding: 1.5rem;
+        }
+
+        .car-name {
+            font-size: 1.8rem;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .car-year {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .car-description {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .car-specs {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border-left: 3px solid #e94560;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .spec-value {
+            color: #7f8c8d;
+        }
+
+        .view-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #e94560 0%, #d63450 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(233,69,96,0.4);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #ffffff;
+            margin: 5% auto;
+            padding: 2rem;
+            border: 2px solid #e94560;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(233,69,96,0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #e94560;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close:hover {
+            color: #1a1a2e;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #e94560;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #1a1a2e;
+            font-size: 2rem;
+        }
+
+        .modal-body {
+            color: #2c3e50;
+        }
+
+        .modal-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-spec-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #e94560;
+        }
+
+        .modal-spec-label {
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-spec-value {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            background: #ffffff;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 3rem;
+            border: 2px solid #f0f0f0;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #e94560;
+            transition: all 0.3s;
+        }
+
+        .review-card:hover {
+            background: #fff;
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-name {
+            font-weight: bold;
+            color: #1a1a2e;
+            font-size: 1.1rem;
+        }
+
+        .review-rating {
+            color: #e94560;
+            font-size: 1.2rem;
+        }
+
+        .review-text {
+            color: #2c3e50;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-date {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+
+        .review-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border: 1px solid #e0e0e0;
+        });
+        }
+
+        /* Signup Section */
+        .signup-section {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 3rem;
+            border: 2px solid #3a3a3a;
+        }
+
+        .signup-form {
+            background: rgba(212,175,55,0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid rgba(212,175,55,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(212,175,55,0.3);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: #e8e8e8;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212,175,55,0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212,175,55,0.5);
+        }
+
+        footer {
+            background: #0a0a0a;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #d4af37;
+        }
+
+        footer p {
+            color: #808080;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-specs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🏁 The Piston Archive</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#collection">Collection</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#signup">Join Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>The Piston Archive</h1>
+            <p class="tagline">Old Iron, New Home</p>
+            <p class="description">This is the exclusive online garage for the finest, rarest, and most beautifully restored vintage cars. Get a deep dive into the machines that defined the road.</p>
+        </div>
+    </section>
+
+    <div class="container" id="collection">
+        <h2 class="section-title">Featured Collection</h2>
+        
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterCars('all')">All Cars</button>
+            <button class="filter-btn" onclick="filterCars('muscle-car')">Muscle Cars</button>
+            <button class="filter-btn" onclick="filterCars('british-classics')">British Classics</button>
+            <button class="filter-btn" onclick="filterCars('fifties-era')">Fifties Era</button>
+            <button class="filter-btn" onclick="filterCars('sports-car')">Sports Cars</button>
+        </div>
+
+        <div class="cars-grid" id="carsGrid"></div>
+    </div>
+
+    <div class="container">
+        <div class="reviews-section" id="reviews">
+            <h2 class="section-title">Customer Reviews</h2>
+            <div id="reviewsList"></div>
+            
+            <div class="review-form">
+                <h3 style="color: #d4af37; margin-bottom: 1.5rem;">Leave Your Review</h3>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewName">Your Name *</label>
+                        <input type="text" id="reviewName" name="reviewName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewEmail">Email Address *</label>
+                        <input type="email" id="reviewEmail" name="reviewEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewRating">Rating *</label>
+                        <select id="reviewRating" name="reviewRating" required>
+                            <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                            <option value="3">⭐⭐⭐ (3 stars)</option>
+                            <option value="2">⭐⭐ (2 stars)</option>
+                            <option value="1">⭐ (1 star)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewText">Your Review *</label>
+                        <textarea id="reviewText" name="reviewText" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="signup">
+        <div class="signup-section">
+            <h2 class="section-title">Join Our Community</h2>
+            <p style="text-align: center; color: #c0c0c0; margin-bottom: 2rem;">
+                Get exclusive access to rare cars, early notifications, and special events
+            </p>
+            <div class="signup-form">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address *</label>
+                        <input type="email" id="signupEmail" name="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interests">Interests</label>
+                        <select id="interests" name="interests">
+                            <option value="muscle">Muscle Cars</option>
+                            <option value="british">British Classics</option>
+                            <option value="sports">Sports Cars</option>
+                            <option value="all">All Vintage Cars</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn" style="width: 100%; margin-top: 1rem;">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Car Details -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalCarName"></h2>
+                <p id="modalCarYear" style="color: #c0c0c0; font-style: italic;"></p>
+            </div>
+            <div class="modal-body">
+                <p id="modalCarDescription" style="margin-bottom: 1.5rem;"></p>
+                <div class="modal-specs" id="modalSpecs"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 The Piston Archive. All Rights Reserved. | Preserving Automotive History</p>
+    </footer>
+
+    <script>
+        // Car Database
+        const cars = [
+            {
+                id: 1,
+                name: "1967 Mustang Fastback",
+                year: 1967,
+                category: "muscle-car",
+                description: "An American icon with a roaring V8 engine. This Fastback has been meticulously restored to its original glory, featuring the classic Lime Gold paint and original interior.",
+                price: 125000,
+                engine: "V8 289 cubic inch",
+                horsepower: "271 HP",
+                transmission: "4-speed Manual",
+                condition: "Fully Restored"
+            },
+            {
+                id: 2,
+                name: "1961 Jaguar E-Type",
+                year: 1961,
+                category: "british-classics",
+                description: "Enzo Ferrari called it 'the most beautiful car ever made.' This Series 1 roadster combines stunning aesthetics with remarkable performance for its era.",
+                price: 285000,
+                engine: "Inline-6 3.8L",
+                horsepower: "265 HP",
+                transmission: "4-speed Manual",
+                condition: "Concours Quality"
+            },
+            {
+                id: 3,
+                name: "1957 Chevrolet Bel Air",
+                year: 1957,
+                category: "fifties-era",
+                description: "The pinnacle of 1950s automotive design with iconic tail fins and chrome trim. This two-door hardtop represents the golden age of American automobiles.",
+                price: 95000,
+                engine: "V8 283 cubic inch",
+                horsepower: "220 HP",
+                transmission: "Powerglide Automatic",
+                condition: "Excellent Restored"
+            },
+            {
+                id: 4,
+                name: "1969 Dodge Charger",
+                year: 1969,
+                category: "muscle-car",
+                description: "A muscle car legend with aggressive styling and raw power. This Charger R/T features the legendary 440 Magnum engine and period-correct options.",
+                price: 145000,
+                engine: "V8 440 Magnum",
+                horsepower: "375 HP",
+                transmission: "4-speed Manual",
+                condition: "Frame-off Restoration"
+            },
+            {
+                id: 5,
+                name: "1973 Porsche 911 Carrera RS",
+                year: 1973,
+                category: "sports-car",
+                description: "The quintessential sports car that defined a generation. With its distinctive ducktail spoiler and lightweight construction, it's a driver's dream.",
+                price: 495000,
+                engine: "Flat-6 2.7L",
+                horsepower: "210 HP",
+                transmission: "5-speed Manual",
+                condition: "Original Unrestored"
+            },
+            {
+                id: 6,
+                name: "1955 Mercedes-Benz 300SL",
+                year: 1955,
+                category: "sports-car",
+                description: "Famous for its gullwing doors and advanced engineering. This 'Gullwing' is one of the most sought-after classic cars in the world.",
+                price: 1250000,
+                engine: "Inline-6 3.0L",
+                horsepower: "215 HP",
+                transmission: "4-speed Manual",
+                condition: "Matching Numbers"
+            },
+            {
+                id: 7,
+                name: "1964 Aston Martin DB5",
+                year: 1964,
+                category: "british-classics",
+                description: "The legendary James Bond car. Refined British engineering meets elegant Italian styling in this ultimate grand tourer.",
+                price: 875000,
+                engine: "Inline-6 4.0L",
+                horsepower: "282 HP",
+                transmission: "5-speed Manual",
+                condition: "Fully Documented"
+            },
+            {
+                id: 8,
+                name: "1970 Plymouth Hemi 'Cuda",
+                year: 1970,
+                category: "muscle-car",
+                description: "One of the most powerful muscle cars ever built. The legendary 426 Hemi engine makes this an absolute beast on the road.",
+                price: 385000,
+                engine: "V8 426 Hemi",
+                horsepower: "425 HP",
+                transmission: "4-speed Manual",
+                condition: "Rotisserie Restored"
+            }
+        ];
+
+        // Reviews Database
+        const reviews = [
+            {
+                name: "Michael Thompson",
+                rating: 5,
+                text: "The DB5 is everything I hoped for! Truly a classic that exceeds expectations.",
+                date: "Oct 15, 2025"
+            },
+            {
+                name: "Sarah Martinez",
+                rating: 5,
+                text: "Incredible collection! The restoration quality is outstanding. Highly recommend!",
+                date: "Oct 18, 2025"
+            },
+            {
+                name: "James Wilson",
+                rating: 4,
+                text: "Beautiful cars and excellent service. The team really knows their classics.",
+                date: "Oct 20, 2025"
+            }
+        ];
+
+        // Render Cars
+        function renderCars(filteredCars = cars) {
+            const grid = document.getElementById('carsGrid');
+            grid.innerHTML = '';
+            
+            filteredCars.forEach((car, index) => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.dataset.category = car.category;
+                
+                card.innerHTML = `
+                    <div class="car-image">
+                        <span style="font-size: 4rem;">${car.year}</span>
+                    </div>
+                    <div class="car-info">
+                        <h3 class="car-name">${car.name}</h3>
+                        <p class="car-year">Year: ${car.year}</p>
+                        <p class="car-description">${car.description}</p>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <span class="spec-label">Price:</span>
+                                <span class="spec-value">${car.price.toLocaleString()}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Engine:</span>
+                                <span class="spec-value">${car.engine}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Horsepower:</span>
+                                <span class="spec-value">${car.horsepower}</span>
+                            </div>
+                        </div>
+                        <button class="view-btn" onclick="showCarDetails(${car.id})">View Details</button>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Cars
+        function filterCars(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (category === 'all') {
+                renderCars(cars);
+            } else {
+                const filtered = cars.filter(car => car.category === category);
+                renderCars(filtered);
+            }
+        }
+
+        // Show Car Details Modal
+        function showCarDetails(carId) {
+            const car = cars.find(c => c.id === carId);
+            if (!car) return;
+            
+            const modal = document.getElementById('carModal');
+            document.getElementById('modalCarName').textContent = car.name;
+            document.getElementById('modalCarYear').textContent = `Year: ${car.year} | Category: ${car.category.replace('-', ' ').toUpperCase()}`;
+            document.getElementById('modalCarDescription').textContent = car.description;
+            
+            const specsContainer = document.getElementById('modalSpecs');
+            specsContainer.innerHTML = `
+                <div class="modal-spec-item">
+                    <div class="modal-spec-label">Price</div>
+                    <div class="modal-spec-value">${car.price.toLocaleString()}</div>
+                </div>
+                <div class="modal-spec-item">
+                    <div class="modal-spec-label">Engine</div>
+                    <div class="modal-spec-value">${car.engine}</div>
+                </div>
+                <div class="modal-spec-item">
+                    <div class="modal-spec-label">Horsepower</div>
+                    <div class="modal-spec-value">${car.horsepower}</div>
+                </div>
+                <div class="modal-spec-item">
+                    <div class="modal-spec-label">Transmission</div>
+                    <div class="modal-spec-value">${car.transmission}</div>
+                </div>
+                <div class="modal-spec-item">
+                    <div class="modal-spec-label">Condition</div>
+                    <div class="modal-spec-value">${car.condition}</div>
+                </div>
+                <div class="modal-spec-item">
+                    <div class="modal-spec-label">Vehicle ID</div>
+                    <div class="modal-spec-value">#VIN-${car.id}${car.year}</div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Render Reviews
+        function renderReviews() {
+            const reviewsList = document.getElementById('reviewsList');
+            reviewsList.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const stars = '⭐'.repeat(review.rating);
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <span class="reviewer-name">${review.name}</span>
+                        <span class="review-rating">${stars}</span>
+                    </div>
+                    <p class="review-text">${review.text}</p>
+                    <p class="review-date">Posted on: ${review.date}</p>
+                `;
+                reviewsList.appendChild(reviewCard);
+            });
+        }
+
+        // Modal Close Functionality
+        const modal = document.getElementById('carModal');
+        const closeBtn = document.querySelector('.close');
+        
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Review Form Submission
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('reviewName').value;
+            const rating = parseInt(document.getElementById('reviewRating').value);
+            const text = document.getElementById('reviewText').value;
+            
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+            
+            reviews.unshift({
+                name: name,
+                rating: rating,
+                text: text,
+                date: dateStr
+            });
+            
+            renderReviews();
+            this.reset();
+            
+            alert('Thank you for your review! It has been added to our collection.');
+            
+            document.getElementById('reviews').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Signup Form Submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('signupEmail').value;
+            const interests = document.getElementById('interests').value;
+            
+            alert(`Welcome to The Piston Archive, ${firstName}!\n\nYour account has been created successfully.\n\nEmail: ${email}\nInterests: ${interests}\n\nYou'll receive exclusive updates about our ${interests} collection.`);
+            
+            this.reset();
+        });
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Intersection Observer for Cards
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCars();
+            renderReviews();
+            
+            // Observe all car cards
+            document.querySelectorAll('.car-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
